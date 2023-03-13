@@ -1,8 +1,4 @@
 
-provider "aws" {
-  region = var.AWS_Region
-}
-
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 3.0"
