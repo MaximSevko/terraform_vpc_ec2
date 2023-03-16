@@ -71,7 +71,6 @@ module "security_group" {
   ingress_rules       = ["http-80-tcp", "https-443-tcp", "all-icmp", "ssh-tcp"]
   egress_rules        = ["all-all"]
 
-  tags = var.securitygroup_tags
 }
 
 
