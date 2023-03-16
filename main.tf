@@ -32,7 +32,7 @@ module "ec2_instance" {
   associate_public_ip_address  = true
   key_name                     = aws_kms_key.this.name
   monitoring                   = true
-  user_data                    = file("mount")
+  user_data                    = file("mount.sh")
   root_block_device            = [
     {
       encrypted   = true
