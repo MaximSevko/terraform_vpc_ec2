@@ -45,7 +45,7 @@ module "ec2_instance" {
   instance_type                = "t4g.micro"
   availability_zone            = element(module.vpc.azs, 0)
   subnet_id                    = element(module.vpc.public_subnets, 0)
-  vpc_security_group_ids       = [module.security_group.security_group_id]
+  vpc_security_group_ids       = [module.security_group.this_security_group_id]
   associate_public_ip_address  = true
   key_name                     = "keym"
   monitoring                   = true
