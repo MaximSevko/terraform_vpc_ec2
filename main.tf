@@ -59,7 +59,7 @@ module "ec2_instance" {
 
 module "security_group" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 4.0"
+  version = "~> 3.0"
 
   name        = var.securitygroup_name
   description = "Security group for EC2 instance"
