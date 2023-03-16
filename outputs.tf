@@ -10,7 +10,7 @@ output "public_subnet_ids" {
 
 # Exports the ID of the EC2 instance created by the terraform-aws-modules/ec2-instance/aws module.
 output "instance_id" {
-  value = module.ec2_instance.instance_id
+  value = module.ec2_instance.id
 }
 
 # Exports the public IP address of the EC2 instance created by the terraform-aws-modules/ec2-instance/aws module.
