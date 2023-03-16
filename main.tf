@@ -30,7 +30,7 @@ module "ec2_instance" {
   subnet_id                    = element(module.vpc.public_subnets, 0)
   vpc_security_group_ids       = [module.security_group.security_group_id]
   associate_public_ip_address  = true
-  key_name                     = aws_kms_key.this.name
+  key_name                     = "keym"
   monitoring                   = true
   user_data                    = file("mount.sh")
   root_block_device            = [
@@ -71,9 +71,5 @@ module "security_group" {
   ingress_rules       = ["http-80-tcp", "https-443-tcp", "all-icmp", "ssh-tcp"]
   egress_rules        = ["all-all"]
 
-}
-
-
-resource "aws_kms_key" "this" {
 }
 
