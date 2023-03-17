@@ -50,26 +50,77 @@ module "ec2_instance" {
   key_name                     = "keym"
   monitoring                   = true
   user_data                    = file("mount.sh")
-  root_block_device            = [
+
+  iam_instance_profile = aws_iam_instance_profile.profile.name
+
+
+    root_block_device = [
     {
       encrypted   = true
       volume_type = "gp3"
       volume_size = 10
+      kms_key_id  = aws_kms_key.this.id
     },
   ]
-  ebs_block_device             = [
-    {
-      device_name = "/dev/sdb"
-      volume_type = "gp3"
-      volume_size = 3
-      encrypted   = true
-    },
-    {
-      device_name = "/dev/sdc"
-      volume_type = "gp3"
-      volume_size = 2
-      encrypted   = true
-    }
-  ]
+}
 
+resource "aws_iam_role" "role" {
+  name = var.role_name
+  path = "/"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = [
+        "sts:AssumeRole",
+        "sts:TagSession",
+        "sts:SetSourceIdentity"
+      ]
+      Principal = {
+               "Service": "ec2.amazonaws.com"
+      }
+      Effect = "Allow"
+      Sid    = ""
+    }]
+  })
+}
+
+resource "aws_iam_instance_profile" "profile" {
+  name      = var.role_name
+  role = aws_iam_role.role.name
+}
+
+  resource "aws_volume_attachment" "this" {
+  device_name = "/dev/sdb"
+  volume_id   = aws_ebs_volume.disk1.id
+  instance_id = module.ec2_instance.id
+}
+
+  resource "aws_volume_attachment" "this1" {
+  device_name = "/dev/sdc"
+  volume_id   = aws_ebs_volume.disk2.id
+  instance_id = module.ec2_instance.id
+}
+
+resource "aws_ebs_volume" "disk1" {
+  availability_zone = element(module.vpc.azs, 0)
+  size= 3
+  type = "gp3"
+  encrypted   = true
+  #kms_key_id = aws_kms_key.this
+
+  tags = var.volume_tags
+}
+
+resource "aws_ebs_volume" "disk2" {
+  availability_zone = element(module.vpc.azs, 0)
+  size = 2
+  type = "gp3"
+
+  encrypted = true
+  #kms_key_id = aws_kms_key.this
+  tags = var.volume_tags
+}
+
+resource "aws_kms_key" "this" {
 }
