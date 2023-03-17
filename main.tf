@@ -109,7 +109,6 @@ resource "aws_ebs_volume" "disk1" {
   encrypted   = true
   #kms_key_id = aws_kms_key.this
 
-  tags = var.volume_tags
 }
 
 resource "aws_ebs_volume" "disk2" {
@@ -119,7 +118,6 @@ resource "aws_ebs_volume" "disk2" {
 
   encrypted = true
   #kms_key_id = aws_kms_key.this
-  tags = var.volume_tags
 }
 
 resource "aws_kms_key" "this" {
