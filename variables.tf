@@ -54,3 +54,8 @@ variable "ec2_name" {
   type        = string
   default     = "Amazon Linux 2 Instance"
 }
+
+variable "role_name" {
+  type        = string
+  default     = "amilinux_role"
+}
