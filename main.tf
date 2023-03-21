@@ -125,7 +125,6 @@ resource "aws_kms_key" "this" {
 
 resource "aws_route53_zone" "dev" {
   name = var.route53_zone_name
-  tags = var.route53_tags
 }
 
 resource "aws_route53_record" "record1" {

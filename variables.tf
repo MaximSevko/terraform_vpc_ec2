@@ -59,3 +59,15 @@ variable "role_name" {
   type        = string
   default     = "amilinux_role"
 }
+
+
+variable "route53_zone_name" {
+  type        = string
+  default     = ""
+}
+
+variable "route53_record_name" {
+  type        = string
+  default     = ""
+}
+
