@@ -1,0 +1,24 @@
+#! /bin/bash
+
+sudo yum install xfsprogs -y
+
+sudo mkdir /home/ec2-user/disk2
+
+sudo mkfs -t xfs /dev/nvme1n1
+
+echo $(blkid | grep /dev/nvme1n1 | awk '{print $2}') /home/ec2-user/mysql xfs defaults 1 1 >> /etc/fstab
+
+sudo mount -a
+
+sudo yum install https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm -y
+
+sudo amazon-linux-extras install epel -y
+
+sudo yum -y install mysql-community-server
+
+sudo systemctl enable --now mysqld
+
+sudo yum install nginx -y
+
+
+
