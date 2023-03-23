@@ -2,7 +2,10 @@
 
 # Mount the mysql-server directory
 sudo mkdir -p ~/mysql-server
+sudo mkfs -t xfs /dev/nvme1n1
 sudo mount /dev/sdb ~/mysql-server
+echo $(blkid | grep /dev/nvme1n1 | awk '{print $2}') /home/ec2-user/mysql xfs defaults 1 1 >> /etc/fstab
+sudo mount -a
 
 # Install and configure MySQL
 sudo yum update -y

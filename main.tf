@@ -96,30 +96,11 @@ resource "aws_iam_instance_profile" "profile" {
   instance_id = module.ec2_instance.id
 }
 
-  resource "aws_volume_attachment" "this1" {
-  device_name = "/dev/sdc"
-  volume_id   = aws_ebs_volume.disk2.id
-  instance_id = module.ec2_instance.id
-}
-
 resource "aws_ebs_volume" "disk1" {
   availability_zone = element(module.vpc.azs, 0)
-  size= 3
+  size= 5
   type = "gp3"
   encrypted   = true
   #kms_key_id = aws_kms_key.this
 
 }
-
-resource "aws_ebs_volume" "disk2" {
-  availability_zone = element(module.vpc.azs, 0)
-  size = 2
-  type = "gp3"
-
-  encrypted = true
-  #kms_key_id = aws_kms_key.this
-}
-
-resource "aws_kms_key" "this" {
-}
-
