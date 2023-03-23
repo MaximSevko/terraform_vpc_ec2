@@ -96,6 +96,7 @@ resource "aws_iam_instance_profile" "profile" {
   instance_id = module.ec2_instance.id
 }
 
+
 resource "aws_ebs_volume" "disk1" {
   availability_zone = element(module.vpc.azs, 0)
   size= 5
@@ -104,3 +105,8 @@ resource "aws_ebs_volume" "disk1" {
   #kms_key_id = aws_kms_key.this
 
 }
+
+
+resource "aws_kms_key" "this" {
+}
+
