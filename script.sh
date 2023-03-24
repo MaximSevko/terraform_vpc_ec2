@@ -29,65 +29,33 @@ sudo systemctl start nginx
 sudo systemctl enable nginx
 sudo systemctl stop nginx
 
-
-
-
-
-
-
-# Install and configure Nginx
-sudo yum install -y nginx
-sudo systemctl enable nginx
-sudo systemctl start nginx
-sudo chown -R ec2-user:ec2-user /usr/share/nginx/html/
-sudo echo "Welcome to my website!" > /usr/share/nginx/html/index.html
-
-# Configure Nginx to serve WordPress
-sudo mkdir /etc/nginx/sites-available
-sudo mkdir /etc/nginx/sites-enabled
-sudo touch /etc/nginx/sites-available/mywebsite.com
-sudo ln -s /etc/nginx/sites-available/mywebsite.com /etc/nginx/sites-enabled/mywebsite.com
-sudo echo "server {
-    listen 80;
-    server_name mywebsite.com www.mywebsite.com;
-    return 301 https://\$server_name\$request_uri;
-}
-
+# Configure Nginx for the domain
+sudo mkdir -p /var/www/example.com/html
+sudo chown -R $USER:$USER /var/www/example.com/html
+sudo chmod -R 755 /var/www/example.com
+sudo tee /etc/nginx/conf.d/example.com.conf > /dev/null <<EOT
 server {
-    listen 443 ssl;
-    server_name mywebsite.com www.mywebsite.com;
-
-    ssl_certificate /etc/letsencrypt/live/mywebsite.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/mywebsite.com/privkey.pem;
-
+    listen 80;
+    server_name example.com www.example.com;
+    root /var/www/example.com/html;
+    index index.html index.htm;
     location / {
-        proxy_pass http://127.0.0.1:8080;
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        try_files $uri $uri/ =404;
     }
+}
+EOT
 
-    location /wp-admin/ {
-        proxy_pass http://127.0.0.1:8080;
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-    }
-
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
-        expires max;
-        log_not_found off;
-    }
-}" | sudo tee /etc/nginx/sites-available/mywebsite.com
-
-# Note: replace 'mywebsite.com' with your own domain name.
-
-# Install Certbot and obtain SSL certificate
+# Start Nginx and install Certbot
+sudo systemctl start nginx
+sudo systemctl enable nginx
 sudo amazon-linux-extras install -y epel
-sudo yum install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d mywebsite.com -d www.mywebsite.com
+sudo yum install -y certbot python2-certbot-nginx
 
-# Note: replace 'mywebsite.com' with your own domain name.
+# Obtain and install the SSL certificate from Let's Encrypt
+sudo certbot --nginx -d example.com -d www.example.com <<EOF
+email@example.com
+A
+EOF
 
 # Add disk to /var/www
 sudo mkdir -p /var/www/wordpress
