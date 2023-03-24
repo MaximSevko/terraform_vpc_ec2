@@ -43,20 +43,20 @@ sudo echo "Welcome to my website!" > /usr/share/nginx/html/index.html
 # Configure Nginx to serve WordPress
 sudo mkdir /etc/nginx/sites-available
 sudo mkdir /etc/nginx/sites-enabled
-sudo touch /etc/nginx/sites-available/mywebsite.com
-sudo ln -s /etc/nginx/sites-available/mywebsite.com /etc/nginx/sites-enabled/mywebsite.com
+sudo touch /etc/nginx/sites-available/mywebsite.dev.qkdev.net
+sudo ln -s /etc/nginx/sites-available/mywebsite.dev.qkdev.net /etc/nginx/sites-enabled/mywebsite.dev.qkdev.net
 sudo echo "server {
     listen 80;
-    server_name mywebsite.com www.mywebsite.com;
+    server_name mywebsite.dev.qkdev.net www.mywebsite.dev.qkdev.net;
     return 301 https://\$server_name\$request_uri;
 }
 
 server {
     listen 443 ssl;
-    server_name mywebsite.com www.mywebsite.com;
+    server_name mywebsite.dev.qkdev.net www.mywebsite.dev.qkdev.net;
 
-    ssl_certificate /etc/letsencrypt/live/mywebsite.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/mywebsite.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/mywebsite.dev.qkdev.net/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/mywebsite.dev.qkdev.net/privkey.pem;
 
     location / {
         proxy_pass http://127.0.0.1:8080;
@@ -76,16 +76,16 @@ server {
         expires max;
         log_not_found off;
     }
-}" | sudo tee /etc/nginx/sites-available/mywebsite.com
+}" | sudo tee /etc/nginx/sites-available/mywebsite.dev.qkdev.net
 
-# Note: replace 'mywebsite.com' with your own domain name.
+# Note: replace 'mywebsite.dev.qkdev.net' with your own domain name.
 
 # Install Certbot and obtain SSL certificate
 sudo amazon-linux-extras install -y epel
 sudo yum install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d mywebsite.com -d www.mywebsite.com
+sudo certbot --nginx -d mywebsite.dev.qkdev.net -d www.mywebsite.dev.qkdev.net
 
-# Note: replace 'mywebsite.com' with your own domain name.
+# Note: replace 'mywebsite.dev.qkdev.net' with your own domain name.
 
 # Restart Nginx to apply changes
 sudo systemctl restart nginx
