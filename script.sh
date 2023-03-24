@@ -32,7 +32,6 @@ sudo mkdir /mnt/mysql-data
 sudo mv /var/lib/mysql/* /mnt/mysql-data/
 sudo echo "datadir=/mnt/mysql-data" | sudo tee -a /etc/my.cnf
 sudo systemctl start mysqld
-
 # Install and configure Nginx
 sudo yum install -y nginx
 sudo systemctl enable nginx
@@ -78,7 +77,6 @@ server {
     }
 }" | sudo tee /etc/nginx/sites-available/mywebsite.dev.qkdev.net
 
-# Note: replace 'mywebsite.dev.qkdev.net' with your own domain name.
 
 # Install Certbot and obtain SSL certificate
 sudo amazon-linux-extras install -y epel
