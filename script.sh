@@ -46,36 +46,56 @@ sudo touch /etc/nginx/sites-available/mywebsite.dev.qkdev.net
 sudo ln -s /etc/nginx/sites-available/mywebsite.dev.qkdev.net /etc/nginx/sites-enabled/mywebsite.dev.qkdev.net
 sudo echo "server {
     listen 80;
-    server_name mywebsite.dev.qkdev.net www.mywebsite.dev.qkdev.net;
-    return 301 https://\$server_name\$request_uri;
+    listen [::]:80;
+    server_name mywebsite.dev.qkdev.net;
+    return 301 https://$server_name$request_uri;
 }
 
 server {
     listen 443 ssl;
-    server_name mywebsite.dev.qkdev.net www.mywebsite.dev.qkdev.net;
+    listen [::]:443 ssl;
+    server_name mywebsite.dev.qkdev.net;
 
+    # SSL Certificate
     ssl_certificate /etc/letsencrypt/live/mywebsite.dev.qkdev.net/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/mywebsite.dev.qkdev.net/privkey.pem;
+    ssl_trusted_certificate /etc/letsencrypt/live/mywebsite.dev.qkdev.net/chain.pem;
 
+    # SSL Settings
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_tickets off;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers off;
+    ssl_ciphers ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256;
+    ssl_stapling on;
+    ssl_stapling_verify on;
+    resolver 8.8.8.8 8.8.4.4 valid=300s;
+    resolver_timeout 5s;
+
+    # Root directory of website
+    root /var/www/mywebsite.dev.qkdev.net;
+
+    # Index page
+    index index.html index.htm;
+
+    # Location of Certbot's validation file
+    location ~ /.well-known/acme-challenge {
+        allow all;
+        root /var/www/mywebsite.dev.qkdev.net;
+    }
+
+    # Redirect non-HTTPS traffic to HTTPS
+    if ($scheme != "https") {
+        return 301 https://$server_name$request_uri;
+    }
+
+    # Other location rules
     location / {
-        proxy_pass http://127.0.0.1:8080;
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        # Your other location rules go here
     }
-
-    location /wp-admin/ {
-        proxy_pass http://127.0.0.1:8080;
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-    }
-
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
-        expires max;
-        log_not_found off;
-    }
-}" | sudo tee /etc/nginx/sites-available/mywebsite.dev.qkdev.net
+}
+" | sudo tee /etc/nginx/sites-available/mywebsite.dev.qkdev.net
 
 
 # Install Certbot and obtain SSL certificate
