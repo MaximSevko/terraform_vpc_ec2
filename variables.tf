@@ -72,5 +72,8 @@ variable "route53_record_name" {
   default     = "mywebsite.dev.qkdev.net"
 }
 
-
+variable "route53_record_name" {
+  type        = string
+  default     = "www.mywebsite.dev.qkdev.net"
+}
 
