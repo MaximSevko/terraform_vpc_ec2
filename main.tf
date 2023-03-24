@@ -111,7 +111,7 @@ resource "aws_kms_key" "this" {
 }
 
 resource "aws_route53_record" "record1" {
-  zone_id = aws_route53_zone.dev.zone_id
+  zone_id = var.route53_zone_name
   name    = var.route53_record_name
   type    = "A"
   ttl     = 300
@@ -119,7 +119,7 @@ resource "aws_route53_record" "record1" {
 }
 
 resource "aws_route53_record" "record2" {
-  zone_id = aws_route53_zone.dev.zone_id
+  zone_id = var.route53_zone_name
   name    = var.route53_record2_name
   type    = "A"
   ttl     = 300
