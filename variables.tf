@@ -69,7 +69,7 @@ variable "route53_zone_name" {
 
 variable "route53_record_name" {
   type        = string
-  default     = ""
+  default     = "mywebsite.dev.qkdev.net"
 }
 
 
