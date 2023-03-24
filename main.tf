@@ -117,3 +117,12 @@ resource "aws_route53_record" "record1" {
   ttl     = 300
   records = [module.ec2_instance.public_ip]
 }
+
+resource "aws_route53_record" "record2" {
+  zone_id = aws_route53_zone.dev.zone_id
+  name    = var.route53_record2_name
+  type    = "A"
+  ttl     = 300
+  records = [module.ec2_instance.public_ip]
+}
+
