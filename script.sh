@@ -95,7 +95,7 @@ server {
         # Your other location rules go here
     }
 }
-" | sudo tee /etc/nginx/sites-available/mywebsite.dev.qkdev.net
+" | sudo tee /etc/nginx/conf.d/mywebsite.dev.qkdev.net.conf
 
 
 # Install Certbot and obtain SSL certificate
