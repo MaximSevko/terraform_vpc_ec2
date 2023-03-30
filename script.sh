@@ -12,21 +12,13 @@ sudo mount -a
 # Install and configure MySQL
 sudo yum update -y
 sudo amazon-linux-extras install -y epel
+sudo yum install https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm -y
+sudo yum install mysql-community-server -y
+
 sudo yum install -y mysql-server
 sudo systemctl enable mysqld
 sudo systemctl start mysqld
-sudo mysql_secure_installation <<EOF
 
-y
-password
-password
-y
-y
-y
-y
-EOF
-
-# Note: replace 'password' with your own secure password.
 
 # Configure MySQL to use the mounted disk
 sudo systemctl stop mysqld
