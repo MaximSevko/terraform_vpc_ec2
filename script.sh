@@ -1,10 +1,12 @@
 #!/bin/bash
 
+
+
 # Mount the mysql-server directory
-sudo mkdir -p ~/mysql-server
+sudo yum install xfsprogs -y
+sudo mkdir /home/ec2-user/mysql-server
 sudo mkfs -t xfs /dev/nvme1n1
-sudo mount /dev/sdb ~/mysql-server
-echo $(blkid | grep /dev/nvme1n1 | awk '{print $2}') /home/ec2-user/mysql xfs defaults 1 1 >> /etc/fstab
+echo $(blkid | grep /dev/nvme1n1 | awk '{print $2}') /home/ec2-user/mysql-server xfs defaults 1 1 >> /etc/fstab
 sudo mount -a
 
 # Install and configure MySQL
@@ -101,8 +103,10 @@ server {
 # Install Certbot and obtain SSL certificate
 sudo amazon-linux-extras install -y epel
 sudo yum install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d mywebsite.dev.qkdev.net -d www.mywebsite.dev.qkdev.net
-
+sudo certbot --nginx -d mywebsite.dev.qkdev.net -d www.mywebsite.dev.qkdev.net <<EOF
+maxim@sevko.by
+A
+EOF
 # Note: replace 'mywebsite.dev.qkdev.net' with your own domain name.
 
 # Restart Nginx to apply changes
