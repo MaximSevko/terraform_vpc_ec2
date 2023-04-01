@@ -2,42 +2,42 @@
 
 
 
-# Mount the mysql-server directory
-sudo yum install xfsprogs -y
-sudo mkdir /home/ec2-user/mysql-server
-sudo mkfs -t xfs /dev/nvme1n1
-echo $(blkid | grep /dev/nvme1n1 | awk '{print $2}') /home/ec2-user/mysql-server xfs defaults 1 1 >> /etc/fstab
-sudo mount -a
+## Mount the mysql-server directory
+#sudo yum install xfsprogs -y 2> /ec2-uuser/errors
+#sudo mkdir /home/ec2-user/mysql-server 2> /ec2-uuser/errors
+#sudo mkfs -t xfs /dev/nvme1n1 2> /ec2-uuser/errors
+#echo $(blkid | grep /dev/nvme1n1 | awk '{print $2}') /home/ec2-user/mysql-server xfs defaults 1 1 >> /etc/fstab 2> /ec2-uuser/errors
+#sudo mount -a 2> /ec2-uuser/errors
+#
+## Install and configure MySQL
+#sudo yum update -y 2> /ec2-uuser/errors
+#sudo amazon-linux-extras install -y epel 2> /ec2-uuser/errors
+#sudo yum install https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm -y 2> /ec2-uuser/errors
+#sudo yum install mysql-community-server -y 2> /ec2-uuser/errors
+#
+#sudo yum install -y mysql-server 2> /ec2-uuser/errors
+#sudo systemctl enable mysqld 2> /ec2-uuser/errors
+#sudo systemctl start mysqld 2> /ec2-uuser/errors
+#
 
-# Install and configure MySQL
-sudo yum update -y
-sudo amazon-linux-extras install -y epel
-sudo yum install https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm -y
-sudo yum install mysql-community-server -y
-
-sudo yum install -y mysql-server
-sudo systemctl enable mysqld
-sudo systemctl start mysqld
-
-
-# Configure MySQL to use the mounted disk
-sudo systemctl stop mysqld
-sudo mkdir /mnt/mysql-data
-sudo mv /var/lib/mysql/* /mnt/mysql-data/
-sudo echo "datadir=/mnt/mysql-data" | sudo tee -a /etc/my.cnf
-sudo systemctl start mysqld
 # Install and configure Nginx
-sudo yum install -y nginx
-sudo systemctl enable nginx
-sudo systemctl start nginx
-sudo chown -R ec2-user:ec2-user /usr/share/nginx/html/
-sudo echo "Welcome to my website!" > /usr/share/nginx/html/index.html
+sudo yum install -y nginx 2> /ec2-uuser/errors
+sudo systemctl enable nginx 2> /ec2-uuser/errors
+sudo systemctl start nginx 2> /ec2-uuser/errors
+sudo chown -R ec2-user:ec2-user /usr/share/nginx/html/ 2> /ec2-uuser/errors
+sudo echo "Welcome to my website!" > /usr/share/nginx/html/index.html 2> /ec2-uuser/errors
+
+# Install Certbot and obtain SSL certificate
+sudo yum install -y certbot python3-certbot-nginx 2> /ec2-uuser/errors
+sudo certbot --nginx -d mywebsite.dev.qkdev.net -d www.mywebsite.dev.qkdev.net 2> /ec2-uuser/errors
+# Note: replace 'mywebsite.dev.qkdev.net' with your own domain name.
+
 
 # Configure Nginx to serve WordPress
-sudo mkdir /etc/nginx/sites-available
-sudo mkdir /etc/nginx/sites-enabled
-sudo touch /etc/nginx/sites-available/mywebsite.dev.qkdev.net
-sudo ln -s /etc/nginx/sites-available/mywebsite.dev.qkdev.net /etc/nginx/sites-enabled/mywebsite.dev.qkdev.net
+sudo mkdir /etc/nginx/sites-available 2> /ec2-uuser/errors
+sudo mkdir /etc/nginx/sites-enabled 2> /ec2-uuser/errors 
+sudo touch /etc/nginx/sites-available/mywebsite.dev.qkdev.net 2> /ec2-uuser/errors
+sudo ln -s /etc/nginx/sites-available/mywebsite.dev.qkdev.net /etc/nginx/sites-enabled/mywebsite.dev.qkdev.net 2> /ec2-uuser/errors
 sudo echo "server {
     listen 80;
     listen [::]:80;
@@ -59,7 +59,7 @@ server {
     ssl_session_timeout 1d;
     ssl_session_cache shared:SSL:50m;
     ssl_session_tickets off;
-    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_protocols TLSv1.2;
     ssl_prefer_server_ciphers off;
     ssl_ciphers ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256;
     ssl_stapling on;
@@ -89,17 +89,17 @@ server {
         # Your other location rules go here
     }
 }
-" | sudo tee /etc/nginx/conf.d/mywebsite.dev.qkdev.net.conf
+" | sudo tee /etc/nginx/conf.d/mywebsite.dev.qkdev.net.conf 2> /ec2-uuser/errors
 
 
-# Install Certbot and obtain SSL certificate
-sudo amazon-linux-extras install -y epel
-sudo yum install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d mywebsite.dev.qkdev.net -d www.mywebsite.dev.qkdev.net <<EOF
-maxim@sevko.by
-A
-EOF
-# Note: replace 'mywebsite.dev.qkdev.net' with your own domain name.
 
 # Restart Nginx to apply changes
 sudo systemctl restart nginx
+
+## Configure MySQL to use the mounted disk
+#sudo systemctl stop mysqld 2> /ec2-uuser/errors
+#sudo mkdir /mnt/mysql-data 2> /ec2-uuser/errors
+#sudo mv /var/lib/mysql/* /mnt/mysql-data/ 2> /ec2-uuser/errors
+#sudo echo "datadir=/mnt/mysql-data" | sudo tee -a /etc/my.cnf 2> /ec2-uuser/errors
+#sudo systemctl start mysqld 2> /ec2-uuser/errors
+#
