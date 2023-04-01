@@ -3,41 +3,41 @@
 
 
 ## Mount the mysql-server directory
-#sudo yum install xfsprogs -y 2> /ec2-uuser/errors
-#sudo mkdir /home/ec2-user/mysql-server 2> /ec2-uuser/errors
-#sudo mkfs -t xfs /dev/nvme1n1 2> /ec2-uuser/errors
-#echo $(blkid | grep /dev/nvme1n1 | awk '{print $2}') /home/ec2-user/mysql-server xfs defaults 1 1 >> /etc/fstab 2> /ec2-uuser/errors
-#sudo mount -a 2> /ec2-uuser/errors
+sudo yum install xfsprogs -y 2> /home/ec2-user/errors
+#sudo mkdir /home/ec2-user/mysql-server 2> /home/ec2-user/errors
+#sudo mkfs -t xfs /dev/nvme1n1 2> /home/ec2-user/errors
+#echo $(blkid | grep /dev/nvme1n1 | awk '{print $2}') /home/ec2-user/mysql-server xfs defaults 1 1 >> /etc/fstab 2> /home/ec2-user/errors
+#sudo mount -a 2> /home/ec2-user/errors
 #
 ## Install and configure MySQL
-#sudo yum update -y 2> /ec2-uuser/errors
-#sudo amazon-linux-extras install -y epel 2> /ec2-uuser/errors
-#sudo yum install https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm -y 2> /ec2-uuser/errors
-#sudo yum install mysql-community-server -y 2> /ec2-uuser/errors
+#sudo yum update -y 2> /home/ec2-user/errors
+sudo amazon-linux-extras install -y epel 2> /home/ec2-user/errors
+#sudo yum install https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm -y 2> /home/ec2-user/errors
+#sudo yum install mysql-community-server -y 2> /home/ec2-user/errors
 #
-#sudo yum install -y mysql-server 2> /ec2-uuser/errors
-#sudo systemctl enable mysqld 2> /ec2-uuser/errors
-#sudo systemctl start mysqld 2> /ec2-uuser/errors
+#sudo yum install -y mysql-server 2> /home/ec2-user/errors
+#sudo systemctl enable mysqld 2> /home/ec2-user/errors
+#sudo systemctl start mysqld 2> /home/ec2-user/errors
 #
 
 # Install and configure Nginx
-sudo yum install -y nginx 2> /ec2-uuser/errors
-sudo systemctl enable nginx 2> /ec2-uuser/errors
-sudo systemctl start nginx 2> /ec2-uuser/errors
-sudo chown -R ec2-user:ec2-user /usr/share/nginx/html/ 2> /ec2-uuser/errors
-sudo echo "Welcome to my website!" > /usr/share/nginx/html/index.html 2> /ec2-uuser/errors
+sudo yum install -y nginx 2> /home/ec2-user/errors
+sudo systemctl enable nginx 2> /home/ec2-user/errors
+sudo systemctl start nginx 2> /home/ec2-user/errors
+sudo chown -R ec2-user:ec2-user /usr/share/nginx/html/ 2> /home/ec2-user/errors
+sudo echo "Welcome to my website!" > /usr/share/nginx/html/index.html 2> /home/ec2-user/errors
 
 # Install Certbot and obtain SSL certificate
-sudo yum install -y certbot python3-certbot-nginx 2> /ec2-uuser/errors
-sudo certbot --nginx -d mywebsite.dev.qkdev.net -d www.mywebsite.dev.qkdev.net 2> /ec2-uuser/errors
+sudo yum install -y certbot python3-certbot-nginx 2> /home/ec2-user/errors
+sudo certbot --nginx -d mywebsite.dev.qkdev.net -d www.mywebsite.dev.qkdev.net 2> /home/ec2-user/errors
 # Note: replace 'mywebsite.dev.qkdev.net' with your own domain name.
 
 
 # Configure Nginx to serve WordPress
-sudo mkdir /etc/nginx/sites-available 2> /ec2-uuser/errors
-sudo mkdir /etc/nginx/sites-enabled 2> /ec2-uuser/errors 
-sudo touch /etc/nginx/sites-available/mywebsite.dev.qkdev.net 2> /ec2-uuser/errors
-sudo ln -s /etc/nginx/sites-available/mywebsite.dev.qkdev.net /etc/nginx/sites-enabled/mywebsite.dev.qkdev.net 2> /ec2-uuser/errors
+sudo mkdir /etc/nginx/sites-available 2> /home/ec2-user/errors
+sudo mkdir /etc/nginx/sites-enabled 2> /home/ec2-user/errors 
+sudo touch /etc/nginx/sites-available/mywebsite.dev.qkdev.net 2> /home/ec2-user/errors
+sudo ln -s /etc/nginx/sites-available/mywebsite.dev.qkdev.net /etc/nginx/sites-enabled/mywebsite.dev.qkdev.net 2> /home/ec2-user/errors
 sudo echo "server {
     listen 80;
     listen [::]:80;
@@ -79,17 +79,12 @@ server {
         root /var/www/mywebsite.dev.qkdev.net;
     }
 
-    # Redirect non-HTTPS traffic to HTTPS
-    if ($scheme != "https") {
-        return 301 https://$server_name$request_uri;
-    }
-
     # Other location rules
     location / {
         # Your other location rules go here
     }
 }
-" | sudo tee /etc/nginx/conf.d/mywebsite.dev.qkdev.net.conf 2> /ec2-uuser/errors
+" | sudo tee /etc/nginx/conf.d/mywebsite.dev.qkdev.net.conf 2> /home/ec2-user/errors
 
 
 
@@ -97,9 +92,9 @@ server {
 sudo systemctl restart nginx
 
 ## Configure MySQL to use the mounted disk
-#sudo systemctl stop mysqld 2> /ec2-uuser/errors
-#sudo mkdir /mnt/mysql-data 2> /ec2-uuser/errors
-#sudo mv /var/lib/mysql/* /mnt/mysql-data/ 2> /ec2-uuser/errors
-#sudo echo "datadir=/mnt/mysql-data" | sudo tee -a /etc/my.cnf 2> /ec2-uuser/errors
-#sudo systemctl start mysqld 2> /ec2-uuser/errors
+#sudo systemctl stop mysqld 2> /home/ec2-user/errors
+#sudo mkdir /mnt/mysql-data 2> /home/ec2-user/errors
+#sudo mv /var/lib/mysql/* /mnt/mysql-data/ 2> /home/ec2-user/errors
+#sudo echo "datadir=/mnt/mysql-data" | sudo tee -a /etc/my.cnf 2> /home/ec2-user/errors
+#sudo systemctl start mysqld 2> /home/ec2-user/errors
 #
