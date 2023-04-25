@@ -28,7 +28,7 @@ module "security_group" {
   ingress_ipv6_cidr_blocks = ["::/0"]
 
   ingress_cidr_blocks = ["0.0.0.0/0"]
-  ingress_rules       = ["http-80-tcp", "https-443-tcp", "all-icmp", "ssh-tcp", "12345-udp"]
+  ingress_rules       = ["http-80-tcp", "https-443-tcp", "all-icmp", "ssh-tcp"]
   egress_rules        = ["all-all"]
   ingress_with_cidr_blocks = [
     {
