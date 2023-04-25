@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo dnf install gcc git make
+sudo dnf install gcc git make -y
 git clone https://git.zx2c4.com/wireguard-tools
 make -C wireguard-tools/src -j$(nproc)
 sudo make -C wireguard-tools/src install
@@ -30,7 +30,7 @@ AllowedIPs = 10.81.22.0/24, fdf1:f187:de58::/64
 
 sudo echo " net.ipv4.ip_forward=1
 net.ipv6.conf.all.forwarding=1
-" | sudo tee /etc/wireguard/wg0.conf
+" | sudo tee /etc/sysctl.conf
 
 sudo sysctl -p
 
