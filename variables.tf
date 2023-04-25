@@ -62,7 +62,7 @@ variable "role_name" {
 
 #Route 53
 
-variable "route53_zone_name" {
+variable "route53_zone_id" {
   type        = string
   default     = ""
 }
