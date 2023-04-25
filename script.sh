@@ -9,8 +9,12 @@ wg genkey | sudo tee /etc/wireguard/private.key
 sudo chmod go= /etc/wireguard/private.key
 sudo cat /etc/wireguard/private.key | wg pubkey | sudo tee /etc/wireguard/public.key
 
+sudo systemctl enable wg-quick@wg0.service
 
-sudo echo "PrivateKey = $(sudo cat /etc/wireguard/private.key)
+sudo systemctl start wg-quick@wg0.service
+
+sudo echo "[Interface]
+PrivateKey = $(sudo cat /etc/wireguard/private.key)
 Address = 10.81.22.0/24, fdf1:f187:de58::1/64
 ListenPort = 12345
 
@@ -21,7 +25,7 @@ PostDown = ip6tables -D FORWARD -i %i -j ACCEPT; ip6tables -t nat -D POSTROUTING
 
 ## client
 [Peer]
-PublicKey = iav9zTSPTrxu0cXKxsS0KhVA8HTUAXrK3PtHbpdQnAg=
+PublicKey = Z9ks/S4MBFUKnBVzZw/H/8bdwiIH9+jtirRFiFjQ+XE=
 AllowedIPs = 10.81.22.0/24, fdf1:f187:de58::/64
 
 " | sudo tee /etc/wireguard/wg0.conf
@@ -36,9 +40,7 @@ sudo sysctl -p
 
 sudo yum install firewalld -y
 
-sudo systemctl enable wg-quick@wg0.service
 
-sudo systemctl start wg-quick@wg0.service
 
 sudo wg
 

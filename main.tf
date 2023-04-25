@@ -49,7 +49,7 @@ module "ec2_instance" {
   associate_public_ip_address  = true
   key_name                     = "keym"
   monitoring                   = true
-  //user_data                    = file("script.sh")
+  user_data                    = file("script.sh")
 
   iam_instance_profile = aws_iam_instance_profile.profile.name
 
