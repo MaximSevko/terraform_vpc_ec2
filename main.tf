@@ -90,22 +90,6 @@ resource "aws_iam_instance_profile" "profile" {
   role = aws_iam_role.role.name
 }
 
-  resource "aws_volume_attachment" "this" {
-  device_name = "/dev/sdb"
-  volume_id   = aws_ebs_volume.disk1.id
-  instance_id = module.ec2_instance.id
-}
-
-
-resource "aws_ebs_volume" "disk1" {
-  availability_zone = element(module.vpc.azs, 0)
-  size= 5
-  type = "gp3"
-  encrypted   = true
-  #kms_key_id = aws_kms_key.this
-
-}
-
 
 resource "aws_kms_key" "this" {
 }
