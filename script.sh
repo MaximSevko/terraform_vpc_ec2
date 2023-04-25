@@ -35,3 +35,12 @@ net.ipv6.conf.all.forwarding=1
 sudo sysctl -p
 
 sudo yum install firewalld -y
+
+sudo systemctl enable wg-quick@wg0.service
+
+sudo systemctl start wg-quick@wg0.service
+
+sudo wg
+
+sudo wg-quick up wg0
+

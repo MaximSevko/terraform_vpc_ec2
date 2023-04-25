@@ -69,11 +69,11 @@ variable "route53_zone_name" {
 
 variable "route53_record_name" {
   type        = string
-  default     = "mywebsite.dev.qkdev.net"
+  default     = "vpn.dev.qkdev.net"
 }
 
 variable "route53_record2_name" {
   type        = string
-  default     = "www.mywebsite.dev.qkdev.net"
+  default     = "vpn1.dev.qkdev.net"
 }
 
