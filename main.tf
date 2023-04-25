@@ -30,6 +30,15 @@ module "security_group" {
   ingress_cidr_blocks = ["0.0.0.0/0"]
   ingress_rules       = ["http-80-tcp", "https-443-tcp", "all-icmp", "ssh-tcp", "12345-udp"]
   egress_rules        = ["all-all"]
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 12345
+      to_port     = 12345
+      protocol    = "udp"
+      description = "vpn"
+      cidr_blocks = "0.0.0.0/0"
+    },
+  ]
 
 }
 
