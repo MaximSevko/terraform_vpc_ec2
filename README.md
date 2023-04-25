@@ -23,3 +23,19 @@ AWS credentials with permission to create and manage VPCs, subnets, and EC2 inst
 6. If the plan looks good, run `terraform apply` to create the resources.
 
 7. When you're finished, run `terraform destroy` to delete the resources.
+
+8. 
+
+[Interface]
+PrivateKey = your private key
+Address = 10.10.10.2/24, fdf1:fbv7:ddf::2/64
+DNS = 1.1.1.1, 1.0.0.1, 2606:4700:4700::1111, 2606:4700:4700::1001, 2001:4860:4860::8888, 2001:4860:4860::8844
+
+
+[Peer]
+PublicKey = Insert the public key from /etc/wireguard/public.key here         
+AllowedIPs = 0.0.0.0/0, 172.31.0.0/16, fdf1:f187:de57::1/64
+Endpoint = Insert instance IP here    :12345
+PersistentKeepalive = 25
+
+ 
