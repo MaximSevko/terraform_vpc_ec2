@@ -1,43 +1,42 @@
 #!/bin/bash
 
 
-
 ## Mount the mysql-server directory
-sudo yum install xfsprogs -y 2> /home/ec2-user/errors
-#sudo mkdir /home/ec2-user/mysql-server 2> /home/ec2-user/errors
-#sudo mkfs -t xfs /dev/nvme1n1 2> /home/ec2-user/errors
-#echo $(blkid | grep /dev/nvme1n1 | awk '{print $2}') /home/ec2-user/mysql-server xfs defaults 1 1 >> /etc/fstab 2> /home/ec2-user/errors
-#sudo mount -a 2> /home/ec2-user/errors
+sudo yum install xfsprogs -y     
+#sudo mkdir /home/ec2-user/mysql-server     
+#sudo mkfs -t xfs /dev/nvme1n1     
+#echo $(blkid | grep /dev/nvme1n1 | awk '{print $2}') /home/ec2-user/mysql-server xfs defaults 1 1 >> /etc/fstab     
+#sudo mount -a     
 #
 ## Install and configure MySQL
-#sudo yum update -y 2> /home/ec2-user/errors
-sudo amazon-linux-extras install -y epel 2> /home/ec2-user/errors
-#sudo yum install https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm -y 2> /home/ec2-user/errors
-#sudo yum install mysql-community-server -y 2> /home/ec2-user/errors
+#sudo yum update -y     
+#sudo yum install https://dev.mysql.com/get/mysql80-community-release-el7-5.noarch.rpm -y     
+#sudo yum install mysql-community-server -y     
 #
-#sudo yum install -y mysql-server 2> /home/ec2-user/errors
-#sudo systemctl enable mysqld 2> /home/ec2-user/errors
-#sudo systemctl start mysqld 2> /home/ec2-user/errors
+#sudo yum install -y mysql-server     
+#sudo systemctl enable mysqld     
+#sudo systemctl start mysqld     
 #
 
 # Install and configure Nginx
-sudo yum install -y nginx 2> /home/ec2-user/errors
-sudo systemctl enable nginx 2> /home/ec2-user/errors
-sudo systemctl start nginx 2> /home/ec2-user/errors
-sudo chown -R ec2-user:ec2-user /usr/share/nginx/html/ 2> /home/ec2-user/errors
-sudo echo "Welcome to my website!" > /usr/share/nginx/html/index.html 2> /home/ec2-user/errors
+sudo yum install -y nginx     
+sudo systemctl enable nginx     
+sudo systemctl start nginx     
+
+sudo chown -R ec2-user:ec2-user /usr/share/nginx/html/     
+sudo echo "Welcome to my website!" > /usr/share/nginx/html/index.html     
 
 # Install Certbot and obtain SSL certificate
-sudo yum install -y certbot python3-certbot-nginx 2> /home/ec2-user/errors
-sudo certbot --nginx -d mywebsite.dev.qkdev.net -d www.mywebsite.dev.qkdev.net 2> /home/ec2-user/errors
-# Note: replace 'mywebsite.dev.qkdev.net' with your own domain name.
+sudo python3 -m venv /opt/certbot/
+sudo /opt/certbot/bin/pip install --upgrade pip
+sudo /opt/certbot/bin/pip install certbot certbot-nginx
 
 
 # Configure Nginx to serve WordPress
-sudo mkdir /etc/nginx/sites-available 2> /home/ec2-user/errors
-sudo mkdir /etc/nginx/sites-enabled 2> /home/ec2-user/errors 
-sudo touch /etc/nginx/sites-available/mywebsite.dev.qkdev.net 2> /home/ec2-user/errors
-sudo ln -s /etc/nginx/sites-available/mywebsite.dev.qkdev.net /etc/nginx/sites-enabled/mywebsite.dev.qkdev.net 2> /home/ec2-user/errors
+sudo mkdir /etc/nginx/sites-available     
+sudo mkdir /etc/nginx/sites-enabled      
+sudo touch /etc/nginx/sites-available/mywebsite.dev.qkdev.net     
+sudo ln -s /etc/nginx/sites-available/mywebsite.dev.qkdev.net /etc/nginx/sites-enabled/mywebsite.dev.qkdev.net     
 sudo echo "server {
     listen 80;
     listen [::]:80;
@@ -84,17 +83,18 @@ server {
         # Your other location rules go here
     }
 }
-" | sudo tee /etc/nginx/conf.d/mywebsite.dev.qkdev.net.conf 2> /home/ec2-user/errors
+" | sudo tee /etc/nginx/nginx.conf
 
 
 
 # Restart Nginx to apply changes
+sudo nginx -t
 sudo systemctl restart nginx
 
 ## Configure MySQL to use the mounted disk
-#sudo systemctl stop mysqld 2> /home/ec2-user/errors
-#sudo mkdir /mnt/mysql-data 2> /home/ec2-user/errors
-#sudo mv /var/lib/mysql/* /mnt/mysql-data/ 2> /home/ec2-user/errors
-#sudo echo "datadir=/mnt/mysql-data" | sudo tee -a /etc/my.cnf 2> /home/ec2-user/errors
-#sudo systemctl start mysqld 2> /home/ec2-user/errors
+#sudo systemctl stop mysqld     
+#sudo mkdir /mnt/mysql-data     
+#sudo mv /var/lib/mysql/* /mnt/mysql-data/     
+#sudo echo "datadir=/mnt/mysql-data" | sudo tee -a /etc/my.cnf     
+#sudo systemctl start mysqld     
 #
