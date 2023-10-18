@@ -71,5 +71,4 @@ module "ec2_instance" {
       encrypted   = true
     }
   ]
-
 }
