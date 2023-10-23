@@ -34,7 +34,7 @@ module "security_group" {
 }
 
 module "ec2_instance" {
-  source  = "terraform-aws-modules/ec2-instance/aws"
+  source = "terraform-aws-modules/ec2-instance/aws"
   version = "~> 3.0"
 
   // Input variables
