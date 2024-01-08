@@ -52,5 +52,5 @@ variable "securitygroup_name" {
 variable "ec2_name" {
   description = "The name of the EC2 instance to be created."
   type        = string
-  default     = "Amazon Linux 2 Instance"
+  default     = "Amazon Linux 2023 Instance"
 }
