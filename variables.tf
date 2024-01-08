@@ -1,6 +1,6 @@
 variable "aws_region" {
   description = "The AWS region to deploy to."
-  default     = "us-east-1"
+  default     = "eu-central-1"
 }
 
 variable "env" {
@@ -10,7 +10,7 @@ variable "env" {
 
 variable "AWS_Region" {
   description = "The AWS region to deploy resources to."
-  default     = "us-east-1"
+  default     = "eu-central-1"
 }
 
 variable "vpc_name" {
