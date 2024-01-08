@@ -52,20 +52,20 @@ module "ec2_instance" {
     {
       encrypted   = true
       volume_type =  "gp3"
-      volume_size = 10
+      volume_size = 8
     },
   ]
   ebs_block_device             = [
     {
       device_name = "/dev/sdb"
       volume_type = "gp3"
-      volume_size = 3
+      volume_size = 1
       encrypted   = true
     },
     {
       device_name = "/dev/sdc"
       volume_type = "gp3"
-      volume_size = 2
+      volume_size = 1
       encrypted   = true
     }
   ]
