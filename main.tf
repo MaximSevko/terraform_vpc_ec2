@@ -41,7 +41,7 @@ module "ec2_instance" {
 
   // Input variables
   name                         = var.ec2_name
-  ami                          = "ami-024f768332f080c5e" 
+  ami                          = "ami-0d0b8f748d0b16f5e" 
   instance_type                = "t4g.small"
   availability_zone            = element(module.vpc.azs, 0)
   subnet_id                    = element(module.vpc.public_subnets, 0)
